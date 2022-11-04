@@ -1,10 +1,11 @@
-package com.example.jdcouponforotherservice.utils;
+package com.example.jdcouponfor3service.utils;
 
 import com.alibaba.fastjson.JSONObject;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
@@ -15,6 +16,7 @@ import org.springframework.util.MultiValueMap;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@Log4j2
 public class WXMessageUtil {
 
     @Autowired HttpUtil httpUtil;
@@ -41,7 +43,7 @@ public class WXMessageUtil {
         data.add("title",title);
         data.add("content",content);
         JSONObject object = httpUtil.postRequest(url, null, data, false);
-        System.out.println(object.toJSONString());
+        log.info(object.toJSONString());
     }
 
 }

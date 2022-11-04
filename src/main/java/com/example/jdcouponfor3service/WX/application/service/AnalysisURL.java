@@ -1,7 +1,7 @@
-package com.example.jdcouponforotherservice.WX.application.service;
+package com.example.jdcouponfor3service.WX.application.service;
 
 
-import com.example.jdcouponforotherservice.utils.HttpUtil;
+import com.example.jdcouponfor3service.utils.HttpUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;

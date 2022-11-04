@@ -1,4 +1,4 @@
-package com.example.jdcouponforotherservice.utils;
+package com.example.jdcouponfor3service.utils;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;

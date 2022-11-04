@@ -1,4 +1,4 @@
-package com.example.jdcouponforotherservice.utils;
+package com.example.jdcouponfor3service.utils;
 
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 

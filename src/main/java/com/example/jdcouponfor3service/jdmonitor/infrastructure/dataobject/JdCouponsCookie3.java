@@ -14,7 +14,7 @@ import javax.persistence.Id;
 @AllArgsConstructor
 @ToString
 @Entity
-public class JdCouponsCookieSecond {
+public class JdCouponsCookie3 {
     @Id
     private int id;
     @TableField("username")

@@ -1,15 +1,13 @@
-package com.example.jdcouponforotherservice.jdmonitor.application.service.JD;
+package com.example.jdcouponfor3service.jdmonitor.application.service.JD;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
-import com.example.jdcouponforotherservice.jdmonitor.application.dto.JDCouponsCookieDTO;
-import com.example.jdcouponforotherservice.jdmonitor.application.dto.JDCouponsDTO;
-import com.example.jdcouponforotherservice.jdmonitor.application.task.JDCouponsTask;
-import com.example.jdcouponforotherservice.jdmonitor.infrastructure.dataobject.JdCouponsCookieSecond;
-import com.example.jdcouponforotherservice.jdmonitor.infrastructure.repository.JdCouponsCookieRepository;
-import com.example.jdcouponforotherservice.utils.HttpUtil;
-import com.example.jdcouponforotherservice.utils.WXMessageUtil;
+import com.example.jdcouponfor3service.jdmonitor.application.dto.JDCouponsCookieDTO;
+import com.example.jdcouponfor3service.jdmonitor.infrastructure.dataobject.JdCouponsCookie3;
+import com.example.jdcouponfor3service.jdmonitor.infrastructure.repository.JdCouponsCookieRepository;
+import com.example.jdcouponfor3service.utils.HttpUtil;
+import com.example.jdcouponfor3service.utils.WXMessageUtil;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
@@ -29,8 +27,6 @@ import java.util.regex.Pattern;
 @Log4j2
 public class JDCouponsService {
     @Autowired
-    private JDCouponsTask task;
-    @Autowired
     JdCouponsCookieRepository repository;
     @Autowired
     HttpUtil httpUtil;
@@ -40,19 +36,15 @@ public class JDCouponsService {
 
     private String MY_FANG_TANG = "SCT110265TJ530QlLf2CCvTSIn9T7XBaho";
 
-    public void buyCoupons(JDCouponsDTO dto) {
-        task.buyCouponsTask(dto);
-    }
-
     public void getCouponsByKeyWay1(String url, boolean onlyUs) {
         try {
             List<String> keyList = parseData(url, "key方式1");
             List<String> roleIdList = parseData(url, "roleId方式1");
             for (int i = 0; i < Math.min(keyList.size(), roleIdList.size()); i++) {
                 String detail = getCouponsDetail(keyList.get(i), roleIdList.get(i));
-                Iterable<JdCouponsCookieSecond> all = repository.findAll();
+                Iterable<JdCouponsCookie3> all = repository.findAll();
                 String trueUrl = "https://s.m.jd.com/activemcenter/mfreecoupon/getcoupon?key=" + keyList.get(i) + "&roleId=" + roleIdList.get(i);
-                for (JdCouponsCookieSecond cookieEntity : all) {
+                for (JdCouponsCookie3 cookieEntity : all) {
                     if (onlyUs) {
                         if (cookieEntity.getOnlyus().equals("是")) {
                             boolean error = sendRequest(cookieEntity, trueUrl, detail);
@@ -79,9 +71,9 @@ public class JDCouponsService {
             List<String> roleIdList = parseData(url, "roleId方式2");
             for (int i = 0; i < Math.min(keyList.size(), roleIdList.size()); i++) {
                 String detail = getCouponsDetail(keyList.get(i), roleIdList.get(i));
-                Iterable<JdCouponsCookieSecond> all = repository.findAll();
+                Iterable<JdCouponsCookie3> all = repository.findAll();
                 String trueUrl = "https://s.m.jd.com/activemcenter/mfreecoupon/getcoupon?key=" + keyList.get(i) + "&roleId=" + roleIdList.get(i);
-                for (JdCouponsCookieSecond cookieEntity : all) {
+                for (JdCouponsCookie3 cookieEntity : all) {
                     if (onlyUs) {
                         if (cookieEntity.getOnlyus().equals("是")) {
                             boolean error = sendRequest(cookieEntity, trueUrl, detail);
@@ -107,9 +99,9 @@ public class JDCouponsService {
             List<String> keyList = parseData(url, "linkKey方式1");
             for (int i = 0; i < keyList.size(); i++) {
                 String detail = getCouponsDetail2(keyList.get(i));
-                Iterable<JdCouponsCookieSecond> all = repository.findAll();
+                Iterable<JdCouponsCookie3> all = repository.findAll();
                 String trueUrl = "https://s.m.jd.com/activemcenter/mfreecoupon/getcoupon?linkKey=" + keyList.get(i);
-                for (JdCouponsCookieSecond cookieEntity : all) {
+                for (JdCouponsCookie3 cookieEntity : all) {
                     if (onlyUs) {
                         if (cookieEntity.getOnlyus().equals("是")) {
                             boolean error = sendRequest(cookieEntity, trueUrl, detail);
@@ -135,9 +127,9 @@ public class JDCouponsService {
             List<String> keyList = parseData(url, "linkKey方式2");
             for (int i = 0; i < keyList.size(); i++) {
                 String detail = getCouponsDetail2(keyList.get(i));
-                Iterable<JdCouponsCookieSecond> all = repository.findAll();
+                Iterable<JdCouponsCookie3> all = repository.findAll();
                 String trueUrl = "https://s.m.jd.com/activemcenter/mfreecoupon/getcoupon?linkKey=" + keyList.get(i);
-                for (JdCouponsCookieSecond cookieEntity : all) {
+                for (JdCouponsCookie3 cookieEntity : all) {
                     if (onlyUs) {
                         if (cookieEntity.getOnlyus().equals("是")) {
                             boolean error = sendRequest(cookieEntity, trueUrl, detail);
@@ -158,7 +150,7 @@ public class JDCouponsService {
         }
     }
 
-    public boolean sendRequest(JdCouponsCookieSecond cookieEntity, String trueUrl, String detail) throws Exception {
+    public boolean sendRequest(JdCouponsCookie3 cookieEntity, String trueUrl, String detail) throws Exception {
         try {
             String wxPush = cookieEntity.getWxpush();
             String cookie = cookieEntity.getCookies();
@@ -186,7 +178,8 @@ public class JDCouponsService {
                 if (object.getInteger("ret") == 2) {
                     try {
                         if (object.getString("errmsg").equals("您还未登录")) {
-                            wxMessageUtil.sendZhiXiMessage(wxPush, "京东Cookies过期，请及时更换", object.toJSONString());
+                            log.info("账号{}京东Cookies过期！", cookieEntity.getPhone());
+                            wxMessageUtil.sendZhiXiMessage(wxPush, "账号"+cookieEntity.getPhone()+"京东Cookies过期，请及时更换", object.toJSONString());
                         }
                     } catch (Exception e) {
                         wxMessageUtil.sendZhiXiMessage(wxPush, object.toJSONString(), object.toJSONString());
@@ -214,13 +207,13 @@ public class JDCouponsService {
                     log.info("trueUrl = " + trueUrl);
                 } else if (object.getInteger("ret") == 145) {
                     sendRequest(cookieEntity, trueUrl, detail);
-                } else if (object.getInteger("ret") == 14) {
+                } else if (object.getInteger("ret") == 14 || object.getInteger("ret") == 15) {
                     log.info("账号{}已经领取过优惠券了", cookieEntity.getPhone());
                 } else if (object.getInteger("ret") == 16){
                     log.info("本时段优惠券已被抢完");
                     return false;
                 }
-                else if (object.getInteger("ret") != 15 && object.getInteger("ret") != -1) {
+                else if (object.getInteger("ret") != -1) {
                     wxMessageUtil.sendZhiXiMessage(wxPush, "账号" + cookieEntity.getPhone() + "领券出错！", detail + object.toJSONString());
                 }
             }
@@ -357,9 +350,9 @@ public class JDCouponsService {
     }
 
     public void changeCookieInfo(JDCouponsCookieDTO dto) {
-        JdCouponsCookieSecond jdCouponsCookie = new JdCouponsCookieSecond();
+        JdCouponsCookie3 jdCouponsCookie = new JdCouponsCookie3();
         jdCouponsCookie.setPhone(dto.getPhone());
-        JdCouponsCookieSecond cookieEntity = repository.findByPhone(dto.getPhone());
+        JdCouponsCookie3 cookieEntity = repository.findByPhone(dto.getPhone());
         if (dto.getCookies() != null) {
             cookieEntity.setCookies(dto.getCookies());
         }
@@ -376,7 +369,7 @@ public class JDCouponsService {
     }
 
     public void insertCookie(JDCouponsCookieDTO dto) {
-        JdCouponsCookieSecond jdCouponsCookie = new JdCouponsCookieSecond();
+        JdCouponsCookie3 jdCouponsCookie = new JdCouponsCookie3();
         jdCouponsCookie.setCookies(dto.getCookies());
         jdCouponsCookie.setWxpush(dto.getWxpush());
         jdCouponsCookie.setNeedsuccesspush(dto.getNeedsuccesspush());
@@ -402,8 +395,8 @@ public class JDCouponsService {
             data.put("loginType","2");
             data.put("body",body);
             String detail = getCouponsDetailFromFanLi(s,body);
-            Iterable<JdCouponsCookieSecond> all = repository.findAll();
-            for (JdCouponsCookieSecond cookieEntity : all) {
+            Iterable<JdCouponsCookie3> all = repository.findAll();
+            for (JdCouponsCookie3 cookieEntity : all) {
                 try {
                     String header = "{" +
                             "  \"cookie\": \""+cookieEntity.getCookies()+"\",\n" +
@@ -482,8 +475,8 @@ public class JDCouponsService {
     @Async
     @Scheduled(cron = "0 0 0 * * ?")
     public void dayDecrease() {
-        Iterable<JdCouponsCookieSecond> all = repository.findAll();
-        for (JdCouponsCookieSecond cookieEntity : all) {
+        Iterable<JdCouponsCookie3> all = repository.findAll();
+        for (JdCouponsCookie3 cookieEntity : all) {
             cookieEntity.setUsedate(cookieEntity.getUsedate() - 1);
             wxMessageUtil.sendZhiXiMessage(cookieEntity.getWxpush(), "账号" + cookieEntity.getPhone() + "使用时间还剩：" + cookieEntity.getUsedate() + "天", "账号" + cookieEntity.getPhone() + "使用时间还剩：" + cookieEntity.getUsedate());
             try {

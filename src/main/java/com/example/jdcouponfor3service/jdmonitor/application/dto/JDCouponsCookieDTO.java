@@ -1,4 +1,4 @@
-package com.example.jdcouponforotherservice.jdmonitor.application.dto;
+package com.example.jdcouponfor3service.jdmonitor.application.dto;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;

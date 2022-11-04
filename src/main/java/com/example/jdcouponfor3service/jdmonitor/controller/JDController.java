@@ -1,11 +1,8 @@
-package com.example.jdcouponforotherservice.jdmonitor.controller;
+package com.example.jdcouponfor3service.jdmonitor.controller;
 
 
-import com.example.jdcouponforotherservice.jdmonitor.application.dto.JDCouponsCookieDTO;
-import com.example.jdcouponforotherservice.jdmonitor.application.dto.JDCouponsDTO;
-import com.example.jdcouponforotherservice.jdmonitor.application.dto.JDMonitorDTO;
-import com.example.jdcouponforotherservice.jdmonitor.application.service.JD.JDCouponsService;
-import com.example.jdcouponforotherservice.jdmonitor.application.service.JD.JDMonitorService;
+import com.example.jdcouponfor3service.jdmonitor.application.dto.JDCouponsCookieDTO;
+import com.example.jdcouponfor3service.jdmonitor.application.service.JD.JDCouponsService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,20 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class JDController {
     @Autowired
     private JDCouponsService jdCouponsService;
-    @Autowired
-    private JDMonitorService jdMonitorService;
-    @ApiOperation("京东抢券")
-    @PostMapping("/buyCoupons")
-    public String buyCoupons(@RequestBody JDCouponsDTO dto){
-        jdCouponsService.buyCoupons(dto);
-        return "正在执行任务,请关注控制台消息";
-    }
-    @ApiOperation("京东监控")
-    @PostMapping("/monitor")
-    public String monitor(@RequestBody JDMonitorDTO dto){
-        jdMonitorService.startMonitorTask(dto);
-        return "正在执行监控,请关注控制台消息";
-    }
+
     @ApiOperation("京东自动领券信息修改")
     @PostMapping("/changeCookieInfo")
     public void changeCookieInfo(@RequestBody JDCouponsCookieDTO dto){
